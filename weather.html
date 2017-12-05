@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Show Local Weather</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css">
+</head>
+<body>
+	
+	<style>
+		
+		body {
+			padding-top: 0px;
+			margin: 0px;
+		}
+
+		#box {
+			padding: 20% 20%; 
+		}
+
+		#weather {
+			padding: 20px 40px;
+		} 
+
+		#weather h4{
+			font-size: 50px;	
+		}
+
+		#weather h5 {
+			color: red;
+		}
+
+	</style>
+
+
+
+	<div class="container" id="box">
+		<input type="text" class="form-control is-valid" id="city" value="" placeholder="Enter a city name">
+
+		<br>
+
+		<button id="btn" class="btn btn-info">Show Weather</button>
+
+		<div id="weather" class="text-info ">
+		</div>
+		
+	</div>
+
+
+
+	<script>
+
+		document.getElementById('btn').addEventListener('click', fetchWeather);
+
+		function fetchWeather(){
+			var xhr = new XMLHttpRequest();
+
+			var path = 'http://api.openweathermap.org/data/2.5/weather?q=';
+			var city = document.getElementById('city').value;
+			var apiKey = '&appid=31b7dd9c9f48307dfb4cc32731d1427f';
+			var units = '&units=metric';
+
+			var url = path + city + apiKey + units;
+
+
+
+			xhr.open('GET', url, true)
+
+			xhr.onload = function(){
+				if(this.status == 200){
+					var data = JSON.parse(this.responseText);
+						
+					var output = '';
+					output += 
+						'<h4>'+data.main.temp+' &#8451</h4>';
+						
+
+					document.getElementById('weather').innerHTML = output;
+				}
+				else{
+					var output = '';
+					output += 
+						'<h5>Please enter a correct city name.</h5>';
+						
+
+					document.getElementById('weather').innerHTML = output;
+				}
+			}
+
+			xhr.send();
+		}
+
+	</script>
+
+</body>
+</html>
